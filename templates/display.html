@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>NER Visualizer</title>
+<style> 
+div {
+  border: 1px solid rgb(210, 208, 208);
+  padding: 25px 50px;
+  background-color: rgb(228, 255, 247);
+  font-family: sans-serif;
+}
+/* Style the header */
+.header {
+  background-color: #f1f1f1;
+  padding: 20px;
+  text-align: center;
+  font-family: sans-serif;
+}
+textarea {
+  font-family: sans-serif;
+  width: 100%;
+  height: 150px;
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+input[type=button], input[type=submit], input[type=reset] {
+    background-color: #04AA6D;
+    border: none;
+    font-size: 16px;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  input[type=button] {
+    background-color: #1198d2;
+    border: none;
+    color: white;
+    padding: 16px 32px;
+    text-decoration: none;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+  input[type=text] {
+  width: 25%;
+  border-radius: 4px;
+  font-size: 16px;
+  background-color: white;
+  background-image: url('searchicon.png');
+  padding: 12px 20px;
+  margin: 8px 0;
+  box-sizing: border-box;
+}
+*{
+  box-sizing: border-box;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  font-family: sans-serif;
+  background-color: white;
+  float: left;
+  width: 50%;
+  padding: 10px;
+  height: 300px; /* Should be removed. Only for demonstration */
+}
+
+/* Clear floats after the columns */
+.row:after {
+  font-family: sans-serif;
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.dropbtn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+
+.d-input__option {
+    font-family: sans-serif;
+    background: rgba(255, 183, 183, 0.9);
+    color: #1e1935;
+    padding: 0.25rem 0.75rem 0.35rem;
+    margin-bottom: 0.5rem;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    display: inline-block;
+    white-space: nowrap;
+    cursor: pointer;
+}
+
+.d-input__option__box {
+    font-family: sans-serif;
+    font-size: 2em;
+    margin-right: 0.5rem;
+    position: relative;
+    bottom: 0.075em;
+}
+</style>
+</head>
+<body>
+
+
+</style>
+</head>
+<body>
+<div>
+<h2>Display name Entity Visualizer</h2>
+
+<p><strong>Tip:</strong> Use the resize property to prevent textareas from being resized (disable the "grabber" in the bottom right corner):</p>
+
+<form  action="/" method="POST">
+  
+  <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+  <input type="submit" value="Submit" >
+  <h2> Get text </h2> 
+  <p> {{ msg }}
+    </p> 
+</form>
+    <form  action="/" method="POST">
+      <input type="text" name="searchword" placeholder="Search ">
+      <input type="submit" value="Search" >
+      </form> 
+  
+      <h2> Search the word is : {{shword}} word in article.</h2> 
+
+      <div class="row">
+        <div class="column" style="background-color:#aaa;">
+          <h2> Top 5 TF-IDF </h2> 
+          {%for e in tfidshow%}
+          <p> {{ e }} </p> 
+          {%endfor%}
+          </div>
+      <div class="column" style="background-color:#bbb;">
+          <h2> Top 5 Bag of Words </h2>
+          {%for i in bow%}
+            <p>  {{ i }} </p>
+          {%endfor%}
+        </div>
+        </div>
+
+    <h2> <font color="blue"> {{ predict }} </font> </h2> 
+    <h2> <font color="blue"> {{ sentiment }} </font> </h2> 
+      
+    <h2> Entity Labels(select)</h2>
+    <form action="/" method="POST">
+
+    <label for="PERSON" class="d-input__option" style>
+      <input type="checkbox" id="PERSON" name="checklist" value = "PERSON" class="d-input__option__box">PERSON </label>
+
+    <label for="NORP" class="d-input__option" style>
+      <input type="checkbox" id="NORP" name="checklist" value ="NORP" class="d-input__option__box">NORP</label>
+
+    <label for="ORG" class="d-input__option" style>
+      <input type="checkbox" id="ORG" name="checklist" value ="ORG" class="d-input__option__box" >ORG </label>
+
+    <label for="gpe" class="d-input__option" style>
+      <input type="checkbox" id="gpe" name="checklist" value ="GPE" class="d-input__option__box" >GPE </label>
+
+    <label for="loc" class="d-input__option" style>
+      <input type="checkbox" id="loc" name="checklist" value ="LOC" class="d-input__option__box" >LOC </label>
+
+    <label for="product" class="d-input__option" style>
+      <input type="checkbox" id="product" name="checklist" value ="PRODUCT" class="d-input__option__box" >PRODUCT </label>
+
+    <label for="event" class="d-input__option" style>
+      <input type="checkbox" id="event" name="checklist" value ="EVENT" class="d-input__option__box" >EVENT </label>
+
+    <label for="work_of_art" class="d-input__option" style>
+      <input type="checkbox" id="work_of_art" name="checklist" value ="WORK_OF_ART" class="d-input__option__box" >WORK OF ART </label>
+
+    <label for="language" class="d-input__option" style>
+      <input type="checkbox" id="language" name="checklist" value ="LANGUAGE" class="d-input__option__box" >LANGUAGE </label>
+
+    <label for="date" class="d-input__option" style>
+      <input type="checkbox" id="date" name="checklist" value ="DATE" class="d-input__option__box" >DATE </label>
+
+    <label for="time" class="d-input__option" style>
+      <input type="checkbox" id="time" name="checklist" value ="TIME" class="d-input__option__box" >TIME </label>
+      
+    <label for="percent" class="d-input__option" style>
+      <input type="checkbox" id="percent" name="checklist" value ="PERCENT" class="d-input__option__box" >PERCENT </label>
+      
+    <label for="money" class="d-input__option" style>
+      <input type="checkbox" id="money" name="checklist" value ="MONEY" class="d-input__option__box" >MONEY </label>
+      
+    <label for="quantity" class="d-input__option" style>
+      <input type="checkbox" id="quantity" name="checklist" value ="QUANTITY" class="d-input__option__box" >QUANTITY </label>
+      
+    <label for="ordinal" class="d-input__option" style>
+      <input type="checkbox" id="ordinal" name="checklist" value ="ORDINAL" class="d-input__option__box" >ORDINAL </label>
+      
+    <label for="cardinal" class="d-input__option" style>
+      <input type="checkbox" id="cardinal" name="checklist" value ="CARDINAL" class="d-input__option__box">CARDINAL </label>
+    <input type="submit" value="Check" >
+      </form> 
+
+<h2> Display Name Entity Recognition </h2> 
+  <p> {{ shdis|markdown }}
+    </p> 
+  </div>
+</div>
+
+</form>
+
+</body>
+</html>
