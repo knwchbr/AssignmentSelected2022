@@ -5,6 +5,11 @@ The demo requires Python 3.6 or 3.7 (The version of TensorFlow we specify in req
 
 git clone https://github.com/knwchbr/AssignmentSelected2022.git
 
-cd AssignmentSelected2022
+$ cd AssignmentSelected2022
+$ pip install -r requirements.txt
+$ python Train_Model.py
+$ python app.py
 
-pip install -r requirements.txt
+
+
+
